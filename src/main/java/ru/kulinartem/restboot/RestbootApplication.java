@@ -1,0 +1,13 @@
+package ru.kulinartem.restboot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class RestbootApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(RestbootApplication.class, args);
+    }
+
+}
