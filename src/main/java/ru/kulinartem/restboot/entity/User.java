@@ -120,7 +120,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         roles.add(this.role);
-        roles.add(new Role("ROLE_USER"));
+        roles.add(new Role("USER"));
         return roles;
     }
 

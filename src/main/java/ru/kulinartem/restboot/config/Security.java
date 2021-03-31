@@ -22,13 +22,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class Security extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final SuccessHandler successHandler;
 
     @Autowired
-    public Security(@Qualifier("UserDetailsImpl") UserDetailsService userDetailsService
-            , SuccessHandler successHandler) {
+    public Security(@Qualifier("UserDetailsImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.successHandler = successHandler;
     }
 
 
@@ -43,12 +40,9 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-                .antMatchers("/user/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-                .antMatchers("/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/**").hasAnyRole("ADMIN", "USER")
                 .and()
                 .formLogin()
-                .successHandler(successHandler)
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
