@@ -30,7 +30,7 @@ public class RestContr {
     }
 
     @GetMapping("/security")
-    public String currentUser() {
+    public User currentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = null;
         if (principal instanceof UserDetails) {
@@ -38,6 +38,6 @@ public class RestContr {
         } else {
             username = principal.toString();
         }
-        return username;
+        return userService.getItemByEmail(username);
     }
 }
