@@ -5,9 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.kulinartem.restboot.entity.User;
 import ru.kulinartem.restboot.service.UserService;
 
@@ -39,5 +37,10 @@ public class RestContr {
             username = principal.toString();
         }
         return userService.getItemByEmail(username);
+    }
+
+    @GetMapping("/user/{id}")
+    public User showUserByID (@PathVariable("id") long id) throws Exception {
+        return userService.getItemById(id);
     }
 }
