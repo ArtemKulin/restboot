@@ -43,4 +43,10 @@ public class RestContr {
     public User showUserByID (@PathVariable("id") long id) throws Exception {
         return userService.getItemById(id);
     }
+
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+        userService.saveItem(user);
+        return user;
+    }
 }
