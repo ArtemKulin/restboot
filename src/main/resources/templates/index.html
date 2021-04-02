@@ -74,8 +74,59 @@
                                     </tbody>
                                 </table>
                             </div>
+
+
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <nav class="navbar navbar-light bg-light">
+                                <span class="navbar-text">
+                                    <strong style="color: black">Add new user</strong>
+                                </span>
+                            </nav>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-4"></div>
+                                    <div class="col-4">
+                                        <form th:method="POST" th:action="@{/api/users}">
+                                            <div class="form-group" style="align-content: center">
+                                                <label for="firstName" style="margin-left: 40%"><b>First name</b></label>
+                                                <input type="text" class="form-control" id="firstName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lastName" style="margin-left: 40%"><b>Last name</b></label>
+                                                <input type="text" class="form-control" id="lastName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="age" style="margin-left: 40%"><b>Age</b></label>
+                                                <input type="number" class="form-control" id="age" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email" style="margin-left: 40%"><b>Email</b></label>
+                                                <input type="text" class="form-control" id="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password" style="margin-left: 40%"><b>Password</b></label>
+                                                <input type="text" class="form-control" id="password">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="role" style="margin-left: 40%"><b>Role</b></label>
+                                                <select  multiple class="form-control" id="role">
+                                                    <option value="ADMIN">ADMIN
+                                                    </option>
+                                                    <option value="USER">USER
+                                                    </option>
+                                                </select>
+                                                <input type="submit" class="btn btn-success" value="Add new user"
+                                                       style="margin-left: 40%; margin-top: 15px">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    </div>
+
                 </div>
 
 <!--                Юзер-->
@@ -99,8 +150,6 @@
                             </thead>
 
                             <tbody id="userContent">
-
-
                             </tbody>
                         </table>
                     </div>
