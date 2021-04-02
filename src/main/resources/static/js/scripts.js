@@ -42,11 +42,14 @@ getData("/api/users")
                     "th:href='@{/api/delete/" + elem.id + "}'" + ">Edit</a>" +
                     "</td>";
             });
+            let tableContent = document.getElementById("tableContent");
+            if(tableContent !== null) {
             document.getElementById("tableContent").innerHTML = tbody;
+            }
         }
     });
 
-getData("api/security").then(data => {
+getData ("/api/security").then(data => {
     let navItem = "<li class='nav-item' style='color: white'>";
     navItem += "<strong>" + data.email + "</strong>";
     navItem += " with roles ";
@@ -72,7 +75,28 @@ getData("api/security").then(data => {
         div.classList.add('active');
     }
 
+   let userId = data.id;
+    tab.setAttribute('name', '/api/user/' + userId);
+
+}).then(() => {
+    let tab = document.getElementById('v-pills-profile-tab');
+    let href= tab.getAttribute('name');
+
+    getData(href).then(user => {
+        let userTbody = "";
+            userTbody += "<td>" + user.id + "</td>";
+            userTbody += "<td>" + user.name + "</td>";
+            userTbody += "<td>" + user.lastName + "</td>";
+            userTbody += "<td>" + user.age + "</td>";
+            userTbody += "<td>" + user.email + "</td>";
+            userTbody += "<td>"
+            user.authorities.reverse();
+            user.authorities
+                .forEach(
+                    (t) => {
+                        userTbody += t.role.substr(5) + " ";
+                    })
+            userTbody += "</td>";
+            document.getElementById("userContent").innerHTML = userTbody;
+    })
 });
-
-
-
