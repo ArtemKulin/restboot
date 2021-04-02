@@ -24,12 +24,14 @@ getData("/api/users")
                 tbody += "<td>" + elem.age + "</td>";
                 tbody += "<td>" + elem.email + "</td>";
                 tbody += "<td>"
+                if(elem.role !== null){
                 elem.authorities.reverse();
                 elem.authorities
                     .forEach(
                         (t) => {
                             tbody += t.role.substr(5) + " ";
                         })
+                }
                 tbody += "</td>";
                 tbody += "<td>" +
                     "<a type='button' class='btn btn-info editButton' " +
@@ -90,12 +92,14 @@ getData ("/api/security").then(data => {
             userTbody += "<td>" + user.age + "</td>";
             userTbody += "<td>" + user.email + "</td>";
             userTbody += "<td>"
+        if(user.role !== null) {
             user.authorities.reverse();
             user.authorities
                 .forEach(
                     (t) => {
                         userTbody += t.role.substr(5) + " ";
                     })
+        }
             userTbody += "</td>";
             document.getElementById("userContent").innerHTML = userTbody;
     })
