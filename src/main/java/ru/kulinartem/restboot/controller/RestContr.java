@@ -2,11 +2,14 @@ package ru.kulinartem.restboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import ru.kulinartem.restboot.entity.Role;
 import ru.kulinartem.restboot.entity.User;
+import ru.kulinartem.restboot.service.RoleService;
 import ru.kulinartem.restboot.service.UserService;
 
 import java.util.List;
@@ -16,10 +19,12 @@ import java.util.List;
 public class RestContr {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public RestContr(UserService userService) {
+    public RestContr(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/users")
@@ -45,8 +50,11 @@ public class RestContr {
     }
 
     @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-        //userService.saveItem(user);
+    public User createUser(@RequestBody  User user) {
+        String roleName = user.getRole().getRole();
+        Role role = roleService.findRoleByRole(roleName);
+        user.setRole(role);
+        userService.saveItem(user);
         return user;
     }
 }

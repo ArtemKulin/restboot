@@ -1,6 +1,7 @@
 package ru.kulinartem.restboot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kulinartem.restboot.entity.Role;
@@ -24,4 +25,12 @@ public class RoleServiceImpl implements RoleService{
     public List<Role> getAllItems() {
         return repository.findAll();
     }
+
+    @Override
+    public Role findRoleByRole (String name) {
+        return repository.findRoleByRole(name).orElseThrow(() ->
+                (new UsernameNotFoundException("Role with name " + name + " not found")));
+    }
+
+
 }
