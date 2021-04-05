@@ -46,7 +46,7 @@ public class RestContr {
 
     @PostMapping("/users")
     public User createUser(@RequestBody User user) {
-        userService.saveItem(user);
+        //userService.saveItem(user);
         return user;
     }
 }
