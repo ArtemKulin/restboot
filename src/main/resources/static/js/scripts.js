@@ -40,34 +40,70 @@ function renderMainPage() {
                 data.forEach((elem) => {
                     table += drawTable(elem);
                     table += "<td>" +
-                        "<a type='button' class='btn btn-info editButton' " +
+                        "<a data-modal type='button' class='btn btn-info editButton' " +
                         "data-toggle='modal' " +
-                        "href='/api/edit/" + elem.id + "}'" + ">Edit</a>" +
+                        "href='/api/edit/" + elem.id + "' data-target='" + elem.id + "'>Edit</a>" +
                         "</td>";
                     table += "<td>" +
-                        "<a type='button' class='btn btn-danger deleteButton' " +
+                        "<a data-modal type='button' class='btn btn-danger deleteButton' " +
                         "data-toggle='modal' " +
-                        "th:href='@{/api/delete/" + elem.id + "}'" + ">Delete</a>" +
+                        "href='/api/delete/" + elem.id + "' data-target='" + elem.id + "'>Delete</a>" +
                         "</td>";
                 });
             } else {
                 table += drawTable(data);
                 table += "<td>" +
-                    "<a type='button' class='btn btn-info editButton' " +
+                    "<a data-modal class='btn btn-info editButton' " +
                     "data-toggle='modal' " +
-                    "href='/api/edit/" + data.id + "}'" + ">Edit</a>" +
+                    "href='/api/edit/" + data.id + "' data-target='" + data.id + "'>Edit</a>" +
                     "</td>";
                 table += "<td>" +
-                    "<a type='button' class='btn btn-danger deleteButton' " +
+                    "<a data-modal class='btn btn-danger deleteButton' " +
                     "data-toggle='modal' " +
-                    "th:href='@{/api/delete/" + data.id + "}'" + ">Delete</a>" +
+                    "href='/api/delete/" + data.id + "' data-target='" + data.id + "'>Delete</a>" +
                     "</td>";
             }
             let tableContent = document.getElementById("tableContent");
             if (tableContent !== null) {
                 tableContent.innerHTML = table;
             }
+        }).then(() => {
+
+        $('.editButton').on('click', function (event) {
+            event.preventDefault();
+            var href = $(this).attr('href');
+            console.log(href);
+            var text = $(this).text();
+            console.log(text);
+
+            jQuery.get(href, function (user) {
+                $('.editModalForm #id').val(user.editId);
+                $('.editModalForm #name').val(user.editName);
+                $('.editModalForm #lastName').val(user.editLastName);
+            });
+            $('.editModalForm #exampleModal').modal();
         });
+
+        const modalTrigger = document.querySelectorAll('[data-modal]'),
+            modal = document.querySelector('.modal'),
+            modalClose = document.querySelector('.close');
+        //console.log(modalTrigger);
+        //console.log(modal);
+
+        modalTrigger.forEach((e) => {
+            console.log(modalTrigger);
+            e.addEventListener('click', function (event) {
+                event.preventDefault();
+                modal.classList.add('show');
+                modal.classList.remove('fade');
+
+                console.log(e);
+                console.log(modal);
+                // modal.classList.toggle('show');
+                // modal.classList.remove('hide')
+            })
+        })
+    })
 }
 
 getData("/api/security").then(data => {
