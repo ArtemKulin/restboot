@@ -42,12 +42,12 @@ function renderMainPage() {
                     table += "<td>" +
                         "<a data-modal type='button' class='btn btn-info editButton' " +
                         "data-toggle='modal' " +
-                        "href='/api/edit/" + elem.id + "' data-target='" + elem.id + "'>Edit</a>" +
+                        "href='/api/users/" + elem.id + "' data-target='" + elem.id + "'>Edit</a>" +
                         "</td>";
                     table += "<td>" +
                         "<a data-modal type='button' class='btn btn-danger deleteButton' " +
                         "data-toggle='modal' " +
-                        "href='/api/delete/" + elem.id + "' data-target='" + elem.id + "'>Delete</a>" +
+                        "href='/api/users/" + elem.id + "' data-target='" + elem.id + "'>Delete</a>" +
                         "</td>";
                 });
             } else {
@@ -55,12 +55,12 @@ function renderMainPage() {
                 table += "<td>" +
                     "<a data-modal class='btn btn-info editButton' " +
                     "data-toggle='modal' " +
-                    "href='/api/edit/" + data.id + "' data-target='" + data.id + "'>Edit</a>" +
+                    "href='/api/users/" + data.id + "' data-target='" + data.id + "'>Edit</a>" +
                     "</td>";
                 table += "<td>" +
                     "<a data-modal class='btn btn-danger deleteButton' " +
                     "data-toggle='modal' " +
-                    "href='/api/delete/" + data.id + "' data-target='" + data.id + "'>Delete</a>" +
+                    "href='/api/users/" + data.id + "' data-target='" + data.id + "'>Delete</a>" +
                     "</td>";
             }
             let tableContent = document.getElementById("tableContent");
@@ -71,38 +71,67 @@ function renderMainPage() {
 
         $('.editButton').on('click', function (event) {
             event.preventDefault();
-            var href = $(this).attr('href');
+            let href = $(this).attr('href');
             console.log(href);
-            var text = $(this).text();
-            console.log(text);
+            getData(href).then((data) => {
+               const editForm = document.forms.editForm;
+               console.log(editForm);
 
-            jQuery.get(href, function (user) {
+
+                const user = data.valueOf();
+                console.log(user);
+                $('.editModalForm').modal();
+
+                $('.editModalForm #editId').val(user.id);
+                $('.editModalForm #editName').val(user.name);
+                $('.editModalForm #editLastName').val(user.lastName);
+                $('.editModalForm #editAge').val(user.age);
+                $('.editModalForm #editEmail').val(user.email);
+                $('.editModalForm #editPassword').val(user.password);
+                $('.editModalForm #editRole').val(user.role);
+
+                editForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const editFormData = new FormData(editForm);
+                    let editUser = Object.fromEntries(editFormData.entries());
+                    console.log(obj);
+                    editUser.role.valueOf();
+
+
+                    console.log(FormData.valueOf(data.valueOf()));
+            })
+
+            })
+
+
+
+
+           /* getData(href).then((user) => {
+                fetch("/api/users"), {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    },
+                    body: user
+                }
+            }).then(() => {
+                console.log(obj);
+            })*/
+
+
+            //$('.editModalForm').modal();
+
+
+
+
+            /*jQuery.get(href, function (user) {
                 $('.editModalForm #id').val(user.editId);
                 $('.editModalForm #name').val(user.editName);
                 $('.editModalForm #lastName').val(user.editLastName);
-            });
-            $('.editModalForm #exampleModal').modal();
+            });*/
+            //$('.editModalForm #exampleModal').modal();
         });
 
-        const modalTrigger = document.querySelectorAll('[data-modal]'),
-            modal = document.querySelector('.modal'),
-            modalClose = document.querySelector('.close');
-        //console.log(modalTrigger);
-        //console.log(modal);
-
-        modalTrigger.forEach((e) => {
-            console.log(modalTrigger);
-            e.addEventListener('click', function (event) {
-                event.preventDefault();
-                modal.classList.add('show');
-                modal.classList.remove('fade');
-
-                console.log(e);
-                console.log(modal);
-                // modal.classList.toggle('show');
-                // modal.classList.remove('hide')
-            })
-        })
     })
 }
 
@@ -133,7 +162,7 @@ getData("/api/security").then(data => {
     }
 
     let userId = data.id;
-    tab.setAttribute('name', '/api/user/' + userId);
+    tab.setAttribute('name', '/api/users/' + userId);
 
 }).then(() => {
     let tab = document.getElementById('v-pills-profile-tab');

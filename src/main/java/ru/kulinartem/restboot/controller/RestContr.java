@@ -1,6 +1,7 @@
 package ru.kulinartem.restboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +29,20 @@ public class RestContr {
     }
 
     @GetMapping("/users")
-    public List<User> showListUsers() {
-        return userService.getAllItems();
+    public ResponseEntity<List<User>> showAllUsers() {
+
+        List<User> users = userService.getAllItems();
+
+        if (users == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+
     }
 
     @GetMapping("/security")
-    public User currentUser() {
+    public ResponseEntity<User> showSecurityUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = null;
         if (principal instanceof UserDetails) {
@@ -41,20 +50,68 @@ public class RestContr {
         } else {
             username = principal.toString();
         }
-        return userService.getItemByEmail(username);
+
+        User user = userService.getItemByEmail(username);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/user/{id}")
-    public User showUserByID (@PathVariable("id") long id) throws Exception {
-        return userService.getItemById(id);
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> showUserByID (@PathVariable("id") long id) throws Exception {
+        User user = userService.getItemById(id);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/users")
-    public User createUser(@RequestBody  User user) {
+    public ResponseEntity<User> createUser(@RequestBody  User user) {
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         String roleName = user.getRole().getRole();
         Role role = roleService.findRoleByRole(roleName);
+
+        if (role == null) {
+           role = new Role(roleName);
+        }
+
         user.setRole(role);
-        userService.saveItem(user);
-        return user;
+        this.userService.saveItem(user);
+
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/users")
+    public ResponseEntity<User> editUser (@RequestBody User user) {
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        this.userService.saveItem(user);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<User> deleteUser (@PathVariable("id") long id) throws Exception {
+        User user = userService.getItemById(id);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        this.userService.deleteItem(user);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

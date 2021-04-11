@@ -1,3 +1,4 @@
+/*
 'use strict';
 
     const modalTrigger = document.querySelectorAll('[data-modal]'),
@@ -14,4 +15,5 @@
         })
     })
 
+*/
 

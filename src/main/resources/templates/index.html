@@ -76,9 +76,10 @@
                                 </table>
                             </div>
 
-                            <div class="editModalForm">
-                                <form action="#" th:method="PUT" th:action="@{/api/edit/}">
-                                    <div class="modal fade" tabindex="-1" id="2"
+                          <!--  Модальное окно для редактирования пользователя-->
+                            <div class="editModalForm container">
+                                <form action="#" th:method="PUT" th:action="@{/api/users/}" id="editForm">
+                                    <div class="editModalForm modal fade" tabindex="-1"
                                          aria-labelledby="editModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
@@ -144,8 +145,98 @@
                                                             <button type="button" class="btn btn-secondary"
                                                                     data-dismiss="modal">Close
                                                             </button>
-                                                            <input type="submit" class="btn btn-primary"
+                                                            <input type="submit" class="btn btn-primary" id="editSubmitButton"
                                                                    value="Edit">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                               <!-- Модальное окно для удаления пользователя-->
+                            <div class="deleteModalForm container">
+                                <form action="#" th:method="DELETE" th:action="@{/api/users/}">
+                                    <div class="deleteModalForm modal fade" tabindex="-1"
+                                         aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="deleteModalLabel"
+                                                        style="text-align: left">Delete user</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label" for="deleteId">ID:</label>
+                                                            <input class="form-control" id="deleteId"
+                                                                   name="deleteId" type="text"
+                                                                    readonly/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label"
+                                                                   for="deleteName">Name:</label>
+                                                            <input class="form-control" id="deleteName"
+                                                                   name="deleteName"
+                                                                   type="text"
+                                                                   readonly/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label" for="deleteLastName">Surname:</label>
+                                                            <input class="form-control" id="deleteLastName"
+                                                                   name="deleteLastName"
+                                                                   type="text"
+                                                                   readonly/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label"
+                                                                   for="deleteAge">Age:</label>
+                                                            <input class="form-control" id="deleteAge"
+                                                                   name="deleteAge"
+                                                                   type="number"
+                                                                   readonly/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label"
+                                                                   for="deleteEmail">Email:</label>
+                                                            <input class="form-control" id="deleteEmail"
+                                                                   name="deleteEmail"
+                                                                   type="text"
+                                                                   readonly/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label" for="deletePassword">Password:</label>
+                                                            <input class="form-control" id="deletePassword"
+                                                                   name="deletePassword"
+                                                                   type="password"
+                                                                   readonly/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label"
+                                                                   for="deleteRole">Role:</label>
+                                                            <select multiple
+                                                                    class="form-control" id="deleteRole"
+                                                                    name="deleteRole" readonly>
+                                                                <option value="ROLE_ADMIN">
+                                                                    ADMIN
+                                                                </option>
+                                                                <option value="ROLE_USER">
+                                                                    USER
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <input type="submit" class="btn btn-primary"
+                                                                   value="Delete">
                                                         </div>
                                                     </div>
                                                 </div>
