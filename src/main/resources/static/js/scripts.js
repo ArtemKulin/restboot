@@ -31,16 +31,41 @@ async function getData(url) {
     return await res.json();
 }
 
+function getRoles () {
+    let arr = [];
+    let i = 0;
+    getData('/api/roles').then((data) => {
+        data.forEach((e) => {
+            arr[i] = e.valueOf();
+            i++;
+        })
+    })
+    return arr;
+}
+
+const roles = getRoles();
+
+
 const putData = async (url, data) => {
-    let res = await fetch(url, {
+    let res = await fetch (url, {
         method: "PUT",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json; charset=utf-8'
         },
         body: data
     });
 
     return await res.json();
+}
+
+const deleteData = async (url) => {
+    let res = await fetch (url, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        },
+    });
+    return res;
 }
 
 function renderMainPage() {
@@ -86,14 +111,9 @@ function renderMainPage() {
             let href = $(this).attr('href');
             console.log(href);
             getData(href).then((data) => {
-               const editForm = document.forms.editForm;
-               console.log(editForm);
-
-
+                const editForm = document.forms.editForm;
                 const user = data.valueOf();
-                let role = user.role;
-                console.log(role);
-                console.log(user);
+
                 $('.editModalForm').modal();
 
                 $('.editModalForm #editId').val(user.id);
@@ -101,59 +121,50 @@ function renderMainPage() {
                 $('.editModalForm #editLastName').val(user.lastName);
                 $('.editModalForm #editAge').val(user.age);
                 $('.editModalForm #editEmail').val(user.email);
-                $('.editModalForm #editPassword').val(user.password);
 
                 editForm.addEventListener('submit', (e) => {
                     e.preventDefault();
                     const editFormData = new FormData(editForm);
                     let editUser = Object.fromEntries(editFormData.entries());
-                    console.log(editUser);
-                    let roleValue = editUser.editRole.valueOf();
-                    console.log(roleValue);
-                    editUser.editRole = {
-                            'role': roleValue,
-                    }
-                    const json = JSON.stringify(editUser);
-                    console.log(json);
-                    putData('/api/users', json).then(async () => {
-                        $('.editModalForm').modal();
-                        //await renderMainPage();
+                    roles.forEach((role) => {
+                        if (role.role.valueOf === editUser.role.valueOf) {
+                            editUser.role = role;
+                        }
                     })
-
+                    const json = JSON.stringify(editUser);
+                    putData('/api/users/', json).then(async () => {
+                        $('.editModalForm').modal('hide');
+                        await renderMainPage();
+                    })
+                })
             })
+        })
 
+            $('.deleteButton').on('click', function (event) {
+                event.preventDefault();
+                let href = $(this).attr('href');
+                getData(href).then((data) => {
+                    const deleteForm = document.forms.deleteForm;
+                    const user = data.valueOf();
+
+                    $('.deleteModalForm').modal();
+
+                    $('.deleteModalForm #deleteId').val(user.id);
+                    $('.deleteModalForm #deleteName').val(user.name);
+                    $('.deleteModalForm #deleteLastName').val(user.lastName);
+                    $('.deleteModalForm #deleteAge').val(user.age);
+                    $('.deleteModalForm #deleteEmail').val(user.email);
+
+                    deleteForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        deleteData(href).then(async () => {
+                            $('.deleteModalForm').modal('hide');
+                            await renderMainPage();
+                        })
+                    })
+                })
             })
-
-
-
-
-           /* getData(href).then((user) => {
-                fetch("/api/users"), {
-                    method: "PUT",
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8'
-                    },
-                    body: user
-                }
-            }).then(() => {
-                console.log(obj);
-            })*/
-
-
-            //$('.editModalForm').modal();
-
-
-
-
-            /*jQuery.get(href, function (user) {
-                $('.editModalForm #id').val(user.editId);
-                $('.editModalForm #name').val(user.editName);
-                $('.editModalForm #lastName').val(user.editLastName);
-            });*/
-            //$('.editModalForm #exampleModal').modal();
         });
-
-    })
 }
 
 getData("/api/security").then(data => {
@@ -219,11 +230,11 @@ function bindPostData(form) {
             const formData = new FormData(form);
 
             let obj = Object.fromEntries(formData.entries());
-            let roleValue = obj.role.valueOf();
-            obj.role = {
-                'role': roleValue,
-                'authority': roleValue
-            }
+                        roles.forEach((role) => {
+                if (role.role.valueOf === obj.role.valueOf) {
+                    obj.role = role;
+                }
+            })
 
             const json = JSON.stringify(obj);
 
