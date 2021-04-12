@@ -77,14 +77,14 @@ public class RestContr {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        String roleName = user.getRole().getRole();
-        Role role = roleService.findRoleByRole(roleName);
+//        String roleName = user.getRole().getRole();
+//        Role role = roleService.findRoleByRole(roleName);
+//
+//        if (role == null) {
+//           role = new Role(roleName);
+//        }
 
-        if (role == null) {
-           role = new Role(roleName);
-        }
-
-        user.setRole(role);
+//        user.setRole(role);
         this.userService.saveItem(user);
 
         return new ResponseEntity<>(user, HttpStatus.CREATED);
