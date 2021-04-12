@@ -31,6 +31,18 @@ async function getData(url) {
     return await res.json();
 }
 
+const putData = async (url, data) => {
+    let res = await fetch(url, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+
+    return await res.json();
+}
+
 function renderMainPage() {
     getData("/api/users")
         .then(data => {
@@ -79,6 +91,8 @@ function renderMainPage() {
 
 
                 const user = data.valueOf();
+                let role = user.role;
+                console.log(role);
                 console.log(user);
                 $('.editModalForm').modal();
 
@@ -88,17 +102,24 @@ function renderMainPage() {
                 $('.editModalForm #editAge').val(user.age);
                 $('.editModalForm #editEmail').val(user.email);
                 $('.editModalForm #editPassword').val(user.password);
-                $('.editModalForm #editRole').val(user.role);
 
                 editForm.addEventListener('submit', (e) => {
                     e.preventDefault();
                     const editFormData = new FormData(editForm);
                     let editUser = Object.fromEntries(editFormData.entries());
-                    console.log(obj);
-                    editUser.role.valueOf();
+                    console.log(editUser);
+                    let roleValue = editUser.editRole.valueOf();
+                    console.log(roleValue);
+                    editUser.editRole = {
+                            'role': roleValue,
+                    }
+                    const json = JSON.stringify(editUser);
+                    console.log(json);
+                    putData('/api/users', json).then(async () => {
+                        $('.editModalForm').modal();
+                        //await renderMainPage();
+                    })
 
-
-                    console.log(FormData.valueOf(data.valueOf()));
             })
 
             })
