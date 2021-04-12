@@ -17,7 +17,5 @@ public interface UserService {
 
     public void deleteItem(User item);
 
-    public void updateItem(User item, long id) throws UsernameNotFoundException;
-
     public User getItemByEmail(String email);
 }

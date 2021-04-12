@@ -47,18 +47,6 @@ public class UserServiceImpl implements UserService{
         repository.delete(item);
     }
 
-    @Transactional
-    @Override
-    public void updateItem(User item, long id) throws UsernameNotFoundException {
-        User updatedUser = getItemById(id);
-        updatedUser.setName(item.getName());
-        updatedUser.setLastName(item.getLastName());
-        updatedUser.setAge(item.getAge());
-        updatedUser.setEmail(item.getEmail());
-        updatedUser.setPassword(new BCryptPasswordEncoder(12).encode(item.getPassword()));
-        updatedUser.setRole(item.getRole());
-        repository.save(updatedUser);
-    }
 
     @Transactional
     @Override
