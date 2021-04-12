@@ -17,15 +17,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class RestContr {
+public class UserRestController {
 
     private final UserService userService;
-    private final RoleService roleService;
 
     @Autowired
-    public RestContr(UserService userService, RoleService roleService) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @GetMapping("/users")
@@ -77,14 +75,6 @@ public class RestContr {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-//        String roleName = user.getRole().getRole();
-//        Role role = roleService.findRoleByRole(roleName);
-//
-//        if (role == null) {
-//           role = new Role(roleName);
-//        }
-
-//        user.setRole(role);
         this.userService.saveItem(user);
 
         return new ResponseEntity<>(user, HttpStatus.CREATED);
