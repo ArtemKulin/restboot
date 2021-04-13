@@ -37,9 +37,6 @@ public class User implements UserDetails {
     @JoinColumn (name = "role_id", foreignKey = @ForeignKey(name = "role_id_fk"))
     private Role role;
 
-    @Transient
-    private Set<Role> roles = new HashSet<>();
-
     public User() {
     }
 
@@ -109,16 +106,9 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<Role> roles = new HashSet<>();
         roles.add(this.role);
         roles.add(new Role("ROLE_USER"));
         return roles;
@@ -167,7 +157,6 @@ public class User implements UserDetails {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
-                ", roles=" + roles +
                 '}';
     }
 
