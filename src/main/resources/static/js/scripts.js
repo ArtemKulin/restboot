@@ -127,7 +127,7 @@ function renderMainPage() {
                     const editFormData = new FormData(editForm);
                     let editUser = Object.fromEntries(editFormData.entries());
                     roles.forEach((role) => {
-                        if (role.role.valueOf === editUser.role.valueOf) {
+                        if (role.role === editUser.role) {
                             editUser.role = role;
                         }
                     })
