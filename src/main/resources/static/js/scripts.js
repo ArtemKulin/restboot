@@ -231,7 +231,7 @@ function bindPostData(form) {
 
             let obj = Object.fromEntries(formData.entries());
                         roles.forEach((role) => {
-                if (role.role.valueOf === obj.role.valueOf) {
+                if (role.role === obj.role) {
                     obj.role = role;
                 }
             })
